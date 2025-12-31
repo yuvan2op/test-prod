@@ -6,7 +6,7 @@ services:
       context: .
       dockerfile: Dockerfile.jenkins
     image: jenkins-prod:1.0
-    container_name: jenkins
+    container_name: jenkins-container
     restart: unless-stopped
 
     ports:
