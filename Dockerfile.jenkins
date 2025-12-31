@@ -39,6 +39,6 @@ RUN jenkins-plugin-cli --plugin-file /usr/share/jenkins/ref/plugins.txt
 # -----------------------------
 # Verify installations
 # -----------------------------
-RUN node -v && npm -v && docker --version && docker-compose --version
+RUN node -v && npm -v && docker --version && docker compose --version
 
 USER jenkins
