@@ -13,6 +13,13 @@ RUN apt-get update && apt-get install -y \
     git \
     docker.io \
     && rm -rf /var/lib/apt/lists/*
+# -----------------------------
+# Install Docker Compose v2
+# -----------------------------
+RUN mkdir -p /usr/lib/docker/cli-plugins \
+    && curl -SL https://github.com/docker/compose/releases/download/v2.29.2/docker-compose-linux-x86_64 \
+       -o /usr/lib/docker/cli-plugins/docker-compose \
+    && chmod +x /usr/lib/docker/cli-plugins/docker-compose
 
 # -----------------------------
 # Install Node.js 20 LTS
@@ -32,6 +39,6 @@ RUN jenkins-plugin-cli --plugin-file /usr/share/jenkins/ref/plugins.txt
 # -----------------------------
 # Verify installations
 # -----------------------------
-RUN node -v && npm -v && docker --version
+RUN node -v && npm -v && docker --version && docker-compose --version
 
 USER jenkins
