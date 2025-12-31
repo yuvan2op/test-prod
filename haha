@@ -1,0 +1,28 @@
+pipeline {
+    agent any
+    
+    stages {
+
+        stage('Checkout') {
+            steps {
+                git branch: 'main', url: 'https://github.com/yuvan2op/test-prod.git'
+            }
+        }
+
+        stage('Build') {
+            steps {
+                dir('api') {
+                    sh 'npm install'
+                    sh 'npm run dev'
+                }
+
+                dir('client') {
+                    sh 'npm install'
+                    sh 'npm run dev'
+                }
+            }
+        }
+    }
+}
+
+
