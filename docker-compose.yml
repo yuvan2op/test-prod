@@ -4,11 +4,11 @@ services:
   backend:
     build:
       context: ./api
-    container_name: test-prod-backend
+    container_name: prod-backend-container
     restart: unless-stopped
     environment:
       NODE_ENV: production
-      #PORT: 5000
+      PORT: 5000
 
     ports:
       - "5000:5000"
@@ -16,7 +16,7 @@ services:
   frontend:
     build:
       context: ./client
-    container_name: test-prod-frontend
+    container_name: prod-frontend-container
     restart: unless-stopped
     ports:
       - "5173:5173"
