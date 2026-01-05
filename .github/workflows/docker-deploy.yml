@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - main
+  workflow_dispatch:
+    
 
 jobs:
   build-and-deploy:
@@ -14,8 +16,8 @@ jobs:
       CLIENT_IMAGE: yuvan2op/testprod-client
       TAG: latest
 
-      API_CONTAINER: testprod-api-cont
-      CLIENT_CONTAINER: testprod-client-cont
+      API_CONTAINER: testprod-api-container
+      CLIENT_CONTAINER: testprod-client-container
 
       API_PORT: 5000
       CLIENT_PORT: 5173
