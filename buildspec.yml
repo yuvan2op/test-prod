@@ -1,0 +1,66 @@
+version: 0.2
+
+env:
+  variables:
+    NODE_ENV: production
+    AWS_DEFAULT_REGION: ap-south-1
+    API_PORT: 5000
+    FRONTEND_PORT: 3000
+  parameter-store:
+    FRONTEND_URL: /testprod/frontend_url
+
+phases:
+  pre_build:
+    commands:
+      - echo "[$(date +'%Y-%m-%d %H:%M:%S')] Starting pre-build phase..."
+      - echo "Checking Node.js and npm versions..."
+      - node --version
+      - npm --version
+      - echo "Installing backend dependencies..."
+      - cd api && npm ci --only=production
+      - echo "Installing frontend dependencies..."
+      - cd ../client && npm ci
+      - echo "[$(date +'%Y-%m-%d %H:%M:%S')] Pre-build phase completed"
+
+  build:
+    commands:
+      - echo "[$(date +'%Y-%m-%d %H:%M:%S')] Starting build phase..."
+      - echo "Building React frontend..."
+      - npm run build
+      - echo "Verifying build artifacts..."
+      - test -d dist || { echo "Build failed - dist directory not found"; exit 1; }
+      - echo "Frontend build completed successfully"
+      - cd ../api
+      - echo "Validating API server configuration..."
+      - node -c server.js
+      - echo "[$(date +'%Y-%m-%d %H:%M:%S')] Build phase completed"
+
+  post_build:
+    commands:
+      - echo "[$(date +'%Y-%m-%d %H:%M:%S')] Starting post-build phase..."
+      - echo "Build successful"
+      - echo "[$(date +'%Y-%m-%d %H:%M:%S')] Ready for deployment"
+
+artifacts:
+  files:
+    - appspec.yaml
+    - scripts/**/*
+    - api/**/*
+    - client/dist/**/*
+    - api/package.json
+    - api/server.js
+  exclude:
+    - api/node_modules/**/*
+    - client/node_modules/**/*
+    - client/src/**/*
+    - '**/.git/**/*'
+    - '**/.gitignore'
+    - '**/.env.local'
+    - '**/README.md'
+    - '**/Dockerfile'
+    - '**/docker-compose.yml'
+
+cache:
+  paths:
+    - '/root/.npm/**/*'
+    - 'api/node_modules/**/*'

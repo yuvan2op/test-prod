@@ -1,0 +1,18 @@
+{
+  "family": "test-prod-api",
+  "networkMode": "awsvpc",
+  "requiresCompatibilities": ["FARGATE"],
+  "cpu": "256",
+  "memory": "512",
+  "containerDefinitions": [
+    {
+      "name": "api",
+      "image": "<IMAGE_URI>",
+      "portMappings": [
+        {
+          "containerPort": 5000
+        }
+      ]
+    }
+  ]
+}
